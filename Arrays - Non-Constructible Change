@@ -1,0 +1,26 @@
+# Solution 1
+# O (n log (n)) time | O (1) space
+# where n is the number of coins
+def nonConstructibleChange(coins):
+    coins.sort()
+
+    currentChangeCreated = 0
+    for coin in coins:
+        if coin > currentChangeCreated + 1:
+            return currentChangeCreated + 1
+      
+        currentChangeCreated += coin
+    return currentChangeCreated + 1
+
+
+# Sandbox
+import program
+import unittest
+
+
+class TestProgram(unittest.TestCase):
+    def test_case_1(self):
+        input = [5, 7, 1, 1, 2, 3, 22]
+        expected = 20
+        actual = program.nonConstructibleChange(input)
+        self.assertEqual(actual, expected)
