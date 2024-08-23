@@ -1,0 +1,41 @@
+# Solution 1
+# O (nlong(n) + mlog(m)) time | O (1) space
+# where n is the numbers of arrayOne and 
+# m is the numbers of arrayTwo
+def smallestDifference(arrayOne, arrayTwo):
+    arrayOne.sort()
+    arrayTwo.sort()
+    idxOne = 0
+    idxTwo = 0
+    smallest = float('inf')
+    current = float('inf')
+    smallestPair = []
+
+    while idxOne < len(arrayOne) and idxTwo < len(arrayTwo):
+        firstNum = arrayOne[idxOne]
+        secondNum = arrayTwo[idxTwo]
+        if firstNum < secondNum:
+            current = secondNum - firstNum
+            idxOne += 1
+        elif firstNum > secondNum:
+            current = firstNum - secondNum
+            idxTwo += 1
+        else:
+            return [firstNum, secondNum]
+
+        if current < smallest:
+            smallest = current
+            smallestPair = [firstNum, secondNum]
+
+    return smallestPair
+
+# Sandbox
+import program
+import unittest
+
+
+class TestProgram(unittest.TestCase):
+    def test_case_1(self):
+        self.assertEqual(
+            program.smallestDifference([-1, 5, 10, 20, 28, 3], [26, 134, 135, 15, 17]), [28, 26]
+        )
