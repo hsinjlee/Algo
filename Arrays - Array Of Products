@@ -1,0 +1,67 @@
+# Solution 1
+
+# O(n^2) time | O (n) space - where n is the length of the input array
+def arrayOfProducts(array):
+    products = [1 for _ in range(len(array))]
+
+    for i in range(len(array)):
+        runningProducts = 1
+        for j in range(len(array)):
+            if i != j:
+                runningProducts *= array[j]
+        products[i] = runningProducts
+
+    return products
+
+# Solution 2
+# O(n) time | O (n) space - where n is the length of the input array
+def arrayOfProducts(array):
+    products = [1 for _ in range(len(array))]
+    leftProducts = [1 for _ in range(len(array))]
+    rightProducts = [1 for _ in range(len(array))]
+
+    leftRunningProduct = 1
+    for i in range(len(array)):        
+        leftProducts[i] = leftRunningProduct
+        leftRunningProduct *= array[i]
+    
+    rightRunningProduct = 1
+    for i in reversed(range(len(array))):
+        rightProducts[i] = rightRunningProduct
+        rightRunningProduct *= array[i]
+    
+    for i in range(len(array)):
+      products[i] = leftProducts[i] * rightProducts[i]
+
+    return products
+
+
+# Solution 3
+# O(n) time | O (n) space - where n is the length of the input array
+def arrayOfProducts(array):
+    products = [1 for _ in range(len(array))]
+    
+    leftRunningProduct = 1
+    for i in range(len(array)):        
+        products[i] = leftRunningProduct
+        leftRunningProduct *= array[i]
+    
+    rightRunningProduct = 1
+    for i in reversed(range(len(array))):
+        products[i] *= rightRunningProduct
+        rightRunningProduct *= array[i]
+    
+    return products
+        
+# Sandbox
+
+import program
+import unittest
+
+
+class TestProgram(unittest.TestCase):
+    def test_case_1(self):
+        array = [5, 1, 4, 2]
+        expected = [8, 40, 10, 20]
+        actual = program.arrayOfProducts(array)
+        self.assertEqual(actual, expected)
