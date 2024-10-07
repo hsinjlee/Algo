@@ -1,0 +1,70 @@
+# Solution 1
+# O (n) time | O (n) space - where n is the length of the input array
+def missingNumbers(nums):
+    includedNums = set(nums)
+
+    result = []
+    for num in range(1, len(nums) + 3):
+        if not num in includedNums:
+            result.append(num)
+
+    return result
+
+# Solution 2
+# O (n) time | O (1) space - where n is the length of the input array
+def missingNumbers(nums):
+    total = sum(range(1, len(nums) + 3))
+    for num in nums:
+        total -= num
+    
+    averageMissingNumbers = total // 2
+    numsFirstHalf = 0
+    numsSecondHalf = 0
+    for num in nums:
+        if num <= averageMissingNumbers:
+            numsFirstHalf += num
+        else:
+            numsSecondHalf += num
+    expectedFirstHalf = sum(range(1, averageMissingNumbers + 1))
+    expectedSecondHalf = sum(range(averageMissingNumbers + 1, len(nums) + 3))
+
+    return [expectedFirstHalf - numsFirstHalf, expectedSecondHalf - numsSecondHalf]
+    
+# Solution 3
+# O (n) time | O (1) space - where n is the length of the input array
+def missingNumbers(nums):
+    solutionXOR = 0
+    for i in range(0, len(nums) + 3):
+        solutionXOR ^= i
+
+        if i < len(nums):
+            solutionXOR ^= nums[i]
+
+    solution = [0, 0]
+    setBit = solutionXOR & -solutionXOR
+    for i in range(0 , len(nums)+ 3):
+        if setBit & i == 0:
+            solution[0] ^= i
+        else:
+            solution[1] ^= i
+
+        if i < len(nums):
+            if setBit & nums[i] == 0:
+                solution[0] ^= nums[i]
+            else:
+                solution[1] ^= nums[i]
+
+    return sorted(solution)
+
+# Sandbox
+import program
+import unittest
+
+
+class TestProgram(unittest.TestCase):
+    def test_case_1(self):
+        input = [4, 5, 1, 3]
+        expected = [2, 6]
+        actual = program.missingNumbers(input)
+        self.assertEqual(actual, expected)
+
